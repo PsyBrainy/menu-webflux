@@ -1,7 +1,8 @@
 package com.psybrainy.MenuApp.service;
 
-import com.psybrainy.MenuApp.model.Products;
+import com.psybrainy.MenuApp.dto.Product;
 import com.psybrainy.MenuApp.repository.ProductCrudRepository;
+import com.psybrainy.MenuApp.utils.PoductMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
@@ -12,11 +13,18 @@ public class ProductService {
     @Autowired
     private ProductCrudRepository repo;
 
-    public Mono<Products> save(Mono<Products> product){
-        return product.flatMap(repo::save);
+
+    public Mono<Product> save(Mono<Product> product){
+        return product
+                .map(PoductMapper::dtoToEntity)
+                .flatMap(repo::save)
+                .map(PoductMapper::entityToDto);
     }
 
-    public Mono<Products> getProduct(String id){
-        return repo.findById(id);
+    public Mono<Product> getProduct(String name){
+        return repo.findByNameIgnoreCase(name).map(PoductMapper::entityToDto);
     }
+
+
+
 }

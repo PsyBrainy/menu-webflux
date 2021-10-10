@@ -1,6 +1,7 @@
 package com.psybrainy.MenuApp.controller;
 
-import com.psybrainy.MenuApp.model.Products;
+import com.psybrainy.MenuApp.dto.Product;
+import com.psybrainy.MenuApp.entity.ProductEntity;
 import com.psybrainy.MenuApp.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -14,13 +15,13 @@ public class ProductController {
     private ProductService service;
 
     @PostMapping()
-    public Mono<Products> save(@RequestBody Mono<Products> product){
+    public Mono<Product> save(@RequestBody Mono<Product> product){
         return service.save(product);
     }
 
-    @GetMapping("/{id}")
-    public Mono<Products> getProduct(@PathVariable("id") String id){
-        return service.getProduct(id);
+    @GetMapping("/{name}")
+    public Mono<Product> getProduct(@PathVariable("name") String name){
+        return service.getProduct(name);
     }
 
 
